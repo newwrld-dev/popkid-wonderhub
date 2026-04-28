@@ -1,5 +1,7 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 import appCss from "../styles.css?url";
 
 function NotFoundComponent() {
@@ -62,12 +64,13 @@ function NavBar() {
           <div className="h-9 w-9 rounded-lg bg-gradient-neon shadow-neon flex items-center justify-center font-display font-black text-primary-foreground">P</div>
           <span className="font-display text-lg font-bold tracking-wider">POPKID <span className="text-gradient">MD</span></span>
         </Link>
-        <nav className="hidden md:flex items-center gap-6 text-sm">
-          <Link to="/" className="hover:text-primary transition-colors" activeOptions={{ exact: true }} activeProps={{ className: "text-primary" }}>Home</Link>
-          <Link to="/services" className="hover:text-primary transition-colors" activeProps={{ className: "text-primary" }}>Services</Link>
-          <Link to="/community" className="hover:text-primary transition-colors" activeProps={{ className: "text-primary" }}>Community</Link>
-          <Link to="/ai" className="hover:text-primary transition-colors" activeProps={{ className: "text-primary" }}>AI Chat</Link>
-          <Link to="/auth" className="rounded-lg bg-gradient-neon px-4 py-2 font-semibold text-primary-foreground shadow-neon hover:opacity-90 transition">Sign In</Link>
+        <nav className="flex items-center gap-3 md:gap-6 text-sm">
+          <Link to="/" className="hidden md:inline hover:text-primary transition-colors" activeOptions={{ exact: true }} activeProps={{ className: "text-primary" }}>Home</Link>
+          <Link to="/services" className="hidden md:inline hover:text-primary transition-colors" activeProps={{ className: "text-primary" }}>Services</Link>
+          <Link to="/community" className="hidden md:inline hover:text-primary transition-colors" activeProps={{ className: "text-primary" }}>Community</Link>
+          <Link to="/ai" className="hidden md:inline hover:text-primary transition-colors" activeProps={{ className: "text-primary" }}>AI Chat</Link>
+          <ThemeSwitcher />
+          <Link to="/auth" className="rounded-lg bg-gradient-neon px-3 md:px-4 py-2 text-xs md:text-sm font-semibold text-primary-foreground shadow-neon hover:opacity-90 transition">Sign In</Link>
         </nav>
       </div>
     </header>
@@ -84,11 +87,11 @@ function Footer() {
 
 function RootComponent() {
   return (
-    <>
+    <ThemeProvider>
       <NavBar />
       <main className="min-h-screen"><Outlet /></main>
       <Footer />
       <Toaster />
-    </>
+    </ThemeProvider>
   );
 }
