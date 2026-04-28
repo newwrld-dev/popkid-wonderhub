@@ -87,11 +87,11 @@ function Footer() {
 
 function RootComponent() {
   return (
-    <>
+    <ThemeProvider>
       <NavBar />
       <main className="min-h-screen"><Outlet /></main>
       <Footer />
       <Toaster />
-    </>
+    </ThemeProvider>
   );
 }
