@@ -66,9 +66,10 @@ function NavBar() {
         </Link>
         <nav className="flex items-center gap-3 md:gap-6 text-sm">
           <Link to="/" className="hidden md:inline hover:text-primary transition-colors" activeOptions={{ exact: true }} activeProps={{ className: "text-primary" }}>Home</Link>
+          <Link to="/chat" className="hover:text-primary transition-colors" activeProps={{ className: "text-primary" }}>💬 Earn</Link>
+          <Link to="/wallet" className="hover:text-primary transition-colors" activeProps={{ className: "text-primary" }}>👛 Wallet</Link>
           <Link to="/services" className="hidden md:inline hover:text-primary transition-colors" activeProps={{ className: "text-primary" }}>Services</Link>
-          <Link to="/community" className="hidden md:inline hover:text-primary transition-colors" activeProps={{ className: "text-primary" }}>Community</Link>
-          <Link to="/ai" className="hidden md:inline hover:text-primary transition-colors" activeProps={{ className: "text-primary" }}>AI Chat</Link>
+          <Link to="/ai" className="hidden md:inline hover:text-primary transition-colors" activeProps={{ className: "text-primary" }}>AI</Link>
           <ThemeSwitcher />
           <Link to="/auth" className="rounded-lg bg-gradient-neon px-3 md:px-4 py-2 text-xs md:text-sm font-semibold text-primary-foreground shadow-neon hover:opacity-90 transition">Sign In</Link>
         </nav>

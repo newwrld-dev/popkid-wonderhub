@@ -35,6 +35,57 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_chat_credits: {
+        Row: {
+          created_at: string
+          credit_date: string
+          id: string
+          partner_id: string
+          tokens_awarded: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          credit_date?: string
+          id?: string
+          partner_id: string
+          tokens_awarded?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          credit_date?: string
+          id?: string
+          partner_id?: string
+          tokens_awarded?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      direct_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          recipient_id: string
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          recipient_id: string
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          recipient_id?: string
+          sender_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           activated: boolean
@@ -45,6 +96,7 @@ export type Database = {
           display_name: string
           id: string
           phone_number: string | null
+          tokens: number
         }
         Insert: {
           activated?: boolean
@@ -55,6 +107,7 @@ export type Database = {
           display_name?: string
           id: string
           phone_number?: string | null
+          tokens?: number
         }
         Update: {
           activated?: boolean
@@ -65,6 +118,7 @@ export type Database = {
           display_name?: string
           id?: string
           phone_number?: string | null
+          tokens?: number
         }
         Relationships: []
       }
@@ -92,12 +146,49 @@ export type Database = {
         }
         Relationships: []
       }
+      withdrawals: {
+        Row: {
+          created_at: string
+          id: string
+          ksh_amount: number
+          phone_number: string
+          processed_at: string | null
+          status: string
+          tokens_amount: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          ksh_amount: number
+          phone_number: string
+          processed_at?: string | null
+          status?: string
+          tokens_amount: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          ksh_amount?: number
+          phone_number?: string
+          processed_at?: string | null
+          status?: string
+          tokens_amount?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      award_chat_credit: { Args: { _partner_id: string }; Returns: Json }
+      request_withdrawal: {
+        Args: { _phone: string; _tokens: number }
+        Returns: Json
+      }
     }
     Enums: {
       [_ in never]: never

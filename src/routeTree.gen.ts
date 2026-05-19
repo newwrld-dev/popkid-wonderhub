@@ -9,13 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WalletRouteImport } from './routes/wallet'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as CommunityRouteImport } from './routes/community'
+import { Route as ChatRouteImport } from './routes/chat'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as ActivateRouteImport } from './routes/activate'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WalletRoute = WalletRouteImport.update({
+  id: '/wallet',
+  path: '/wallet',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
@@ -24,6 +31,11 @@ const ServicesRoute = ServicesRouteImport.update({
 const CommunityRoute = CommunityRouteImport.update({
   id: '/community',
   path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -52,16 +64,20 @@ export interface FileRoutesByFullPath {
   '/activate': typeof ActivateRoute
   '/ai': typeof AiRoute
   '/auth': typeof AuthRoute
+  '/chat': typeof ChatRoute
   '/community': typeof CommunityRoute
   '/services': typeof ServicesRoute
+  '/wallet': typeof WalletRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/activate': typeof ActivateRoute
   '/ai': typeof AiRoute
   '/auth': typeof AuthRoute
+  '/chat': typeof ChatRoute
   '/community': typeof CommunityRoute
   '/services': typeof ServicesRoute
+  '/wallet': typeof WalletRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -69,22 +85,42 @@ export interface FileRoutesById {
   '/activate': typeof ActivateRoute
   '/ai': typeof AiRoute
   '/auth': typeof AuthRoute
+  '/chat': typeof ChatRoute
   '/community': typeof CommunityRoute
   '/services': typeof ServicesRoute
+  '/wallet': typeof WalletRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/activate' | '/ai' | '/auth' | '/community' | '/services'
+  fullPaths:
+    | '/'
+    | '/activate'
+    | '/ai'
+    | '/auth'
+    | '/chat'
+    | '/community'
+    | '/services'
+    | '/wallet'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/activate' | '/ai' | '/auth' | '/community' | '/services'
+  to:
+    | '/'
+    | '/activate'
+    | '/ai'
+    | '/auth'
+    | '/chat'
+    | '/community'
+    | '/services'
+    | '/wallet'
   id:
     | '__root__'
     | '/'
     | '/activate'
     | '/ai'
     | '/auth'
+    | '/chat'
     | '/community'
     | '/services'
+    | '/wallet'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -92,12 +128,21 @@ export interface RootRouteChildren {
   ActivateRoute: typeof ActivateRoute
   AiRoute: typeof AiRoute
   AuthRoute: typeof AuthRoute
+  ChatRoute: typeof ChatRoute
   CommunityRoute: typeof CommunityRoute
   ServicesRoute: typeof ServicesRoute
+  WalletRoute: typeof WalletRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/wallet': {
+      id: '/wallet'
+      path: '/wallet'
+      fullPath: '/wallet'
+      preLoaderRoute: typeof WalletRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
@@ -110,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/community'
       fullPath: '/community'
       preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -148,8 +200,10 @@ const rootRouteChildren: RootRouteChildren = {
   ActivateRoute: ActivateRoute,
   AiRoute: AiRoute,
   AuthRoute: AuthRoute,
+  ChatRoute: ChatRoute,
   CommunityRoute: CommunityRoute,
   ServicesRoute: ServicesRoute,
+  WalletRoute: WalletRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
