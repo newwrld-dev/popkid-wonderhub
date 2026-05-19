@@ -22,8 +22,15 @@ function AuthPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/community" });
+    supabase.auth.getSession().then(async ({ data }) => {
+      if (data.session) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("activated")
+          .eq("id", data.session.user.id)
+          .maybeSingle();
+        navigate({ to: profile?.activated ? "/community" : "/activate" });
+      }
     });
   }, [navigate]);
 
@@ -32,19 +39,25 @@ function AuthPage() {
     setLoading(true);
     try {
       if (mode === "signup") {
-        const redirectUrl = `${window.location.origin}/community`;
+        const redirectUrl = `${window.location.origin}/activate`;
         const { error } = await supabase.auth.signUp({
           email, password,
           options: { emailRedirectTo: redirectUrl, data: { display_name: name || email.split("@")[0] } },
         });
         if (error) throw error;
-        toast.success("Welcome to POPKID! 🎉");
-        navigate({ to: "/community" });
+        toast.success("Account created! Activate with KSh 200 to continue.");
+        navigate({ to: "/activate" });
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        const { data: sess } = await supabase.auth.getSession();
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("activated")
+          .eq("id", sess.session!.user.id)
+          .maybeSingle();
         toast.success("Welcome back!");
-        navigate({ to: "/community" });
+        navigate({ to: profile?.activated ? "/community" : "/activate" });
       }
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
