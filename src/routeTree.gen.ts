@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as CommunityRouteImport } from './routes/community'
+import { Route as ChatRouteImport } from './routes/chat'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as ActivateRouteImport } from './routes/activate'
@@ -24,6 +25,11 @@ const ServicesRoute = ServicesRouteImport.update({
 const CommunityRoute = CommunityRouteImport.update({
   id: '/community',
   path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/activate': typeof ActivateRoute
   '/ai': typeof AiRoute
   '/auth': typeof AuthRoute
+  '/chat': typeof ChatRoute
   '/community': typeof CommunityRoute
   '/services': typeof ServicesRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/activate': typeof ActivateRoute
   '/ai': typeof AiRoute
   '/auth': typeof AuthRoute
+  '/chat': typeof ChatRoute
   '/community': typeof CommunityRoute
   '/services': typeof ServicesRoute
 }
@@ -69,20 +77,29 @@ export interface FileRoutesById {
   '/activate': typeof ActivateRoute
   '/ai': typeof AiRoute
   '/auth': typeof AuthRoute
+  '/chat': typeof ChatRoute
   '/community': typeof CommunityRoute
   '/services': typeof ServicesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/activate' | '/ai' | '/auth' | '/community' | '/services'
+  fullPaths:
+    | '/'
+    | '/activate'
+    | '/ai'
+    | '/auth'
+    | '/chat'
+    | '/community'
+    | '/services'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/activate' | '/ai' | '/auth' | '/community' | '/services'
+  to: '/' | '/activate' | '/ai' | '/auth' | '/chat' | '/community' | '/services'
   id:
     | '__root__'
     | '/'
     | '/activate'
     | '/ai'
     | '/auth'
+    | '/chat'
     | '/community'
     | '/services'
   fileRoutesById: FileRoutesById
@@ -92,6 +109,7 @@ export interface RootRouteChildren {
   ActivateRoute: typeof ActivateRoute
   AiRoute: typeof AiRoute
   AuthRoute: typeof AuthRoute
+  ChatRoute: typeof ChatRoute
   CommunityRoute: typeof CommunityRoute
   ServicesRoute: typeof ServicesRoute
 }
@@ -110,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/community'
       fullPath: '/community'
       preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -148,9 +173,19 @@ const rootRouteChildren: RootRouteChildren = {
   ActivateRoute: ActivateRoute,
   AiRoute: AiRoute,
   AuthRoute: AuthRoute,
+  ChatRoute: ChatRoute,
   CommunityRoute: CommunityRoute,
   ServicesRoute: ServicesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
