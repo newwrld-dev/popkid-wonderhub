@@ -37,22 +37,34 @@ export type Database = {
       }
       profiles: {
         Row: {
+          activated: boolean
+          activated_at: string | null
           avatar_url: string | null
+          checkout_request_id: string | null
           created_at: string
           display_name: string
           id: string
+          phone_number: string | null
         }
         Insert: {
+          activated?: boolean
+          activated_at?: string | null
           avatar_url?: string | null
+          checkout_request_id?: string | null
           created_at?: string
           display_name?: string
           id: string
+          phone_number?: string | null
         }
         Update: {
+          activated?: boolean
+          activated_at?: string | null
           avatar_url?: string | null
+          checkout_request_id?: string | null
           created_at?: string
           display_name?: string
           id?: string
+          phone_number?: string | null
         }
         Relationships: []
       }
